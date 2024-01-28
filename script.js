@@ -33,8 +33,40 @@ function operate(firstNum, operator, secondNum){
             break;
     }
 } 
+
+function showInOutput(e){
+    let buttonPressed = e.target;
+    const text = document.createTextNode(buttonPressed.textContent);
+    
+    if(buttonPressed.className === 'digit'){
+        output.appendChild(text);
+    }
+    else if(buttonPressed.className === 'operator'){
+        firstNum = parseInt(output.textContent);
+        output.appendChild(text);
+        operator = output.textContent.replace(/[0-9]/g, '').trim();
+       
+    } 
+    if(buttonPressed.id === 'equal'){
+        let array = output.textContent.split(operator);
+        secondNum = parseInt(array.pop())
+
+
+    }
+}
+
+const output = document.querySelector('output');
+const btn = document.querySelectorAll('button');
+
 let firstNum = 3;
 let secondNum = 3;
 let operator = '-';
+
+let operation = [];
+
+btn.forEach(btn => {
+    btn.addEventListener('click', showInOutput);
+
+});
 
 console.log(operate(firstNum, operator, secondNum));
