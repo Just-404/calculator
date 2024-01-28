@@ -59,14 +59,30 @@ function showInOutput(e){
 
     }
     if(buttonPressed.className === 'operator'){
-        output.appendChild(text);
-        operator = buttonPressed.textContent; 
-        operatorIndex = output.textContent.indexOf(operator);
+        
+        if(buttonPressed.textContent == '-'){
+            if(output.textContent == '0'){
+                output.textContent = '-';
+                console.log(true);
+            }
+            else{
+                output.appendChild(text);
+                operator = buttonPressed.textContent;
+                operatorIndex = output.textContent.lastIndexOf(operator);
+                console.log(operatorIndex);
+            }
+        }  
+        else{
+            output.appendChild(text);
+            operator = buttonPressed.textContent; 
+            operatorIndex = output.textContent.indexOf(operator);
+        } 
+      
     }   
    
     if(buttonPressed.id === 'equal'){
        
-        if(operator === "") {
+        if(operator === "" || output.textContent == firstNum) {
             array.push(output.textContent)
             firstNum = parseFloat(array.shift());
             output.textContent = firstNum;
@@ -78,7 +94,7 @@ function showInOutput(e){
             secondNum = parseFloat(output.textContent.slice(operatorIndex+1));
             console.log(secondNum);
             output.textContent = operate(firstNum,operator,secondNum);
-            operator = "";
+            firstNum = parseFloat(output.textContent);
         }
      } else if(buttonPressed.id === 'clear'){     
          clearOutput()
