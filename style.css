@@ -77,6 +77,11 @@ output{
     gap: 6px;
     width: 60px;
 }
-.operators button{
+.operators button, #change-sign{
     height: 55px;
+}
+
+#change-sign{
+    align-self: flex-end;
+    width: 60px;
 }

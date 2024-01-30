@@ -36,70 +36,84 @@ function operate(firstNum, operator, secondNum){
 let firstNum;
 let secondNum;
 let operator = "";
-let operatorIndex;
-let array = [];
+let btnOperatorClicked = false;
+let secondNumTurn = false;
 
 function showInOutput(e){
     const output = document.querySelector('output');
     const buttonPressed = e.target;
     const text = document.createTextNode(buttonPressed.textContent);
-    
+    const changeSign = document.querySelector('#changeSign');
+
     function clearOutput(){
-        output.textContent = '0';
-        firstNum = 0;
-        secondNum = 0;
-        operator = "";
+        output.innerText = '0';
+        firstNum = undefined;
+        secondNum = undefined;
+        operator = undefined;
+        btnOperatorClicked = false;
+        secondNumTurn = false;
+
     }
     
     if(buttonPressed.className === 'digit' || buttonPressed.id === 'point'){
-        if(output.textContent == 0) {
-            output.textContent = "";
-        }
-        output.appendChild(text);
+        if(firstNum === undefined) {
+            
+            if(output.innerText.includes('-')) {
+                output.textContent = "";
+                output.innerText = '-';
 
+            } else output.innerText = "";
+            output.appendChild(text);
+            firstNum = parseFloat(output.innerText);
+        }
+
+        else if(btnOperatorClicked){
+            if(btnOperatorClicked && secondNumTurn){
+                output.textContent = "";
+                secondNumTurn = false;
+            }
+            output.appendChild(text);
+            secondNum = parseFloat(output.innerText);
+            
+        }
+        else if(!btnOperatorClicked){
+            
+            output.appendChild(text);
+            firstNum = parseFloat(output.innerText);
+        }
+        
     }
     if(buttonPressed.className === 'operator'){
-        
-        if(buttonPressed.textContent == '-'){
-            if(output.textContent == '0'){
-                output.textContent = '-';
-                console.log(true);
-            }
-            else{
-                output.appendChild(text);
-                operator = buttonPressed.textContent;
-                operatorIndex = output.textContent.lastIndexOf(operator);
-                console.log(operatorIndex);
-            }
-        }  
-        else{
-            output.appendChild(text);
-            operator = buttonPressed.textContent; 
-            operatorIndex = output.textContent.indexOf(operator);
-        } 
-      
+        operator = buttonPressed.innerText;
+        btnOperatorClicked = true;
+        secondNumTurn = true;
     }   
    
     if(buttonPressed.id === 'equal'){
        
-        if(operator === "" || output.textContent == firstNum) {
-            array.push(output.textContent)
-            firstNum = parseFloat(array.shift());
-            output.textContent = firstNum;
-            console.log(firstNum);
-
-        } else{
-            firstNum = parseFloat(output.textContent.slice(0, operatorIndex));
-            console.log(firstNum);
-            secondNum = parseFloat(output.textContent.slice(operatorIndex+1));
-            console.log(secondNum);
-            output.textContent = operate(firstNum,operator,secondNum);
-            firstNum = parseFloat(output.textContent);
+         if(btnOperatorClicked === false || output.textContent == firstNum) {
+             output.textContent = firstNum;
         }
-     } else if(buttonPressed.id === 'clear'){     
-         clearOutput()
-         
+        if(btnOperatorClicked === true){
+            output.innerText =  Math.round(operate(firstNum,operator,secondNum) * 10000000)/10000000;
+            firstNum = output.innerText;
+            secondNum = 0;
+        }          
+        
 
+    }
+    if(buttonPressed.id === 'change-sign'){
+        if(output.innerText.includes('-')){
+            output.innerText = output.innerText.replace('-', '');
+            firstNum = output.innerText;
+        }else{
+            output.innerText = output.innerText.padStart(output.innerText.length + 1, '-');
+            firstNum = output.innerText;
+        }
+        
+    }
+    if(buttonPressed.id === 'clear'){     
+         clearOutput();
      }
      
 }
