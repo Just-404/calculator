@@ -1,3 +1,10 @@
+const btn = document.querySelectorAll('button');
+
+btn.forEach(btn => {
+    btn.addEventListener('click', showInOutput);
+    
+});
+
 function add(firstNum, secondNum) {
     return +firstNum + +secondNum;
 }
@@ -33,11 +40,12 @@ function operate(firstNum, operator, secondNum){
             break;
     }
 } 
-let firstNum;
-let secondNum;
-let operator = "";
-let btnOperatorClicked = false;
-let secondNumTurn = false;
+
+    let firstNum;
+    let secondNum;
+    let operator = "";
+    let btnOperatorClicked = false;
+    let secondNumTurn = false;
 
 function showInOutput(e){
     const output = document.querySelector('output');
@@ -77,13 +85,21 @@ function showInOutput(e){
             
         }
         else if(!btnOperatorClicked){
-            
             output.appendChild(text);
             firstNum = parseFloat(output.innerText);
         }
         
     }
+
     if(buttonPressed.className === 'operator'){
+
+        if(firstNum !== undefined && secondNum !== undefined){
+            const result =  Math.round(operate(firstNum,operator,secondNum) * 10000000) / 10000000;
+            output.textContent = result;
+            firstNum = result;
+            secondNum = 0;
+        }
+        
         operator = buttonPressed.innerText;
         btnOperatorClicked = true;
         secondNumTurn = true;
@@ -91,7 +107,7 @@ function showInOutput(e){
    
     if(buttonPressed.id === 'equal'){
        
-         if(btnOperatorClicked === false || output.textContent == firstNum) {
+        if(btnOperatorClicked === false || output.textContent == firstNum) {
              output.textContent = firstNum;
         }
         if(btnOperatorClicked === true){
@@ -118,9 +134,3 @@ function showInOutput(e){
      
 }
 
-const btn = document.querySelectorAll('button');
-
-btn.forEach(btn => {
-    btn.addEventListener('click', showInOutput);
-    
-});
