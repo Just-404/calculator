@@ -11,8 +11,8 @@ body{
     align-items: center;
 }
 .container{
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -21,26 +21,50 @@ body{
     align-items: center;
     border-radius: 10px;
     box-shadow: 2px 4px 16px rgba(0,0,0,.2);
-    border: 2px solid rgb(5, 5, 5);
+    border: 3px solid rgb(5, 5, 5);
+    background-color: rgba(3, 73, 100, 0.945);
 
 }
 button{
-    border: 2px solid rgb(145, 138, 138);
+    border: 2px solid rgb(255, 255, 255);
+    cursor: pointer;
+    font-size: 20px;
+    
+}
+.operators button, #change-sign, #point, #equal{
+    background-color: rgb(6, 153, 141);
 }
 
-button:hover{
-    background-color: rgb(255, 217, 146);
+#equal{
+    flex-grow: 1.4;
 }
+
+.digit{
+    background-color: rgb(107, 179, 228);
+}
+button:hover{
+    background-color: rgb(255, 255, 255) !important;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24);
+    transition-duration: 0.1s;
+}
+button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
 output{
+    background-color: white;
     box-sizing: border-box;
-    border: 2px solid rgb(77, 75, 75);
+    border: 3px solid rgb(0, 0, 0);
     padding: 0 10px;
-    height: 50px;
+    height: 80px;
+    border-radius: 10px;
     width: 400px;
     display: flex;
     justify-content: flex-end;
     align-items: end;
-
+    font-size: 60px;
 }
 .buttons{
     width: 400px;
@@ -51,7 +75,7 @@ output{
 
 .down{
     display: flex;
-    gap: 10px
+    gap: 5px
 }
 
 .numbers{
@@ -59,17 +83,20 @@ output{
     height: 300px;
     flex-direction: column;
     width: 360px;
-    gap: 15px;
+    gap: 5px;
 }
 .numbers div{
     flex: 1;
     display: flex;
-    gap: 10px;
+    gap: 5px;
+}
+
+.style-zero button:nth-child(1){
+    flex: 1.7 1 auto;
 }
 
 .numbers div button{
     flex: 1;
-    gap: 10px;
 }
 .operators{
     display: flex;
@@ -77,11 +104,7 @@ output{
     gap: 6px;
     width: 60px;
 }
-.operators button, #change-sign{
-    height: 55px;
-}
 
-#change-sign{
-    align-self: flex-end;
-    width: 60px;
+.operators button{
+    height: 55px;
 }
