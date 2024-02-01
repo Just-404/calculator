@@ -41,6 +41,19 @@ function operate(firstNum, operator, secondNum){
     }
 } 
 
+function doOperation(firstNum, operator, secondNum, output){
+    let result =  operate(firstNum, operator, secondNum);
+    
+    if(typeof result === "string"){
+        output.textContent = result;
+        return result;
+    }else{
+       result = Math.round(operate(firstNum, operator, secondNum) * 10000000) / 10000000;
+       output.textContent = result;
+       return result;
+    }
+   
+}
     let firstNum;
     let secondNum;
     let operator = "";
@@ -51,80 +64,99 @@ function showInOutput(e){
     const output = document.querySelector('output');
     const buttonPressed = e.target;
     const text = document.createTextNode(buttonPressed.textContent);
-    const changeSign = document.querySelector('#changeSign');
+    const pointBtn = document.querySelector('#point');
 
     function clearOutput(){
-        output.innerText = '0';
+        output.textContent = '0';
         firstNum = undefined;
         secondNum = undefined;
         operator = undefined;
         btnOperatorClicked = false;
         secondNumTurn = false;
-
+        pointBtn.setAttribute('style', 'pointer-events: auto;')
     }
     
     if(buttonPressed.className === 'digit' || buttonPressed.id === 'point'){
         if(firstNum === undefined) {
             
-            if(output.innerText.includes('-')) {
+            if(output.textContent.includes('-')) {
                 output.textContent = "";
-                output.innerText = '-';
+                output.textContent = '-';
 
-            } else output.innerText = "";
+            } else if(output.textContent == 0 && buttonPressed.id === 'point'){
+                output.textContent = '0';
+            } 
+            else {
+                output.textContent = "";
+            }
             output.appendChild(text);
-            firstNum = parseFloat(output.innerText);
+            firstNum = parseFloat(output.textContent);
         }
 
         else if(btnOperatorClicked){
             if(btnOperatorClicked && secondNumTurn){
                 output.textContent = "";
                 secondNumTurn = false;
+                pointBtn.setAttribute('style', 'pointer-events: auto;')
             }
             output.appendChild(text);
-            secondNum = parseFloat(output.innerText);
+            secondNum = parseFloat(output.textContent);
             
         }
         else if(!btnOperatorClicked){
             output.appendChild(text);
-            firstNum = parseFloat(output.innerText);
+            firstNum = parseFloat(output.textContent);
         }
         
+        if(buttonPressed.id === 'point'){
+            
+            if(output.textContent.includes('.')){
+                pointBtn.setAttribute('style', 'pointer-events: none;')
+            } 
+            else{
+                pointBtn.setAttribute('style', 'pointer-events: auto;')
+            }
+        
+        }
     }
 
     if(buttonPressed.className === 'operator'){
 
         if(firstNum !== undefined && secondNum !== undefined){
-            const result =  Math.round(operate(firstNum,operator,secondNum) * 10000000) / 10000000;
-            output.textContent = result;
-            firstNum = result;
-            secondNum = 0;
+            firstNum = doOperation(firstNum, operator, secondNum, output);
+            secondNum = undefined;
+
+        } else if(!output.textContent.includes('.')){
+            pointBtn.setAttribute('style', 'pointer-events: auto;')
         }
         
-        operator = buttonPressed.innerText;
+        operator = buttonPressed.textContent;
         btnOperatorClicked = true;
         secondNumTurn = true;
     }   
    
     if(buttonPressed.id === 'equal'){
        
-        if(btnOperatorClicked === false || output.textContent == firstNum) {
+        if(btnOperatorClicked === false || output.textContent == firstNum && secondNum === undefined) {
              output.textContent = firstNum;
         }
-        if(btnOperatorClicked === true){
-            output.innerText =  Math.round(operate(firstNum,operator,secondNum) * 10000000)/10000000;
-            firstNum = output.innerText;
-            secondNum = 0;
-        }          
+        if(firstNum && secondNum){
+            firstNum = doOperation(firstNum, operator, secondNum, output);
+            secondNum = undefined;
+        }
+        if(!output.textContent.includes('.')){
+            pointBtn.setAttribute('style', 'pointer-events: auto;')
+        }         
         
 
     }
     if(buttonPressed.id === 'change-sign'){
-        if(output.innerText.includes('-')){
-            output.innerText = output.innerText.replace('-', '');
-            firstNum = output.innerText;
+        if(output.textContent.includes('-')){
+            output.textContent = output.textContent.replace('-', '');
+            firstNum = output.textContent;
         }else{
-            output.innerText = output.innerText.padStart(output.innerText.length + 1, '-');
-            firstNum = output.innerText;
+            output.textContent = output.textContent.padStart(output.textContent.length + 1, '-');
+            firstNum = output.textContent;
         }
         
     }
